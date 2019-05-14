@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deployment
+  labels:
+    app: hello-minikube
+spec:
+  selector:
+    matchLabels:
+      app: hello-minikube
+  replicas: 3
+  template:
+   metadata:
+     labels:
+       app: hello-minikube
+   spec:
+     containers:
+     - name: hello-minikube
+       image: gcr.io/google_containers/echoserver:1.4
+       ports:
+       - containerPort: 8080
+       livenessProbe:
+         httpGet:
+           path: /
+           port: 8080
+         initialDelaySeconds: 30
+         periodSeconds: 30
+       readinessProbe:
+         httpGet:
+           path: /
+           port: 8080
+
